@@ -1,0 +1,48 @@
+---
+
+- name: Test distribution
+  assert:
+    that: ansible_os_family == "RedHat"
+
+- name: Create Kibana YUM repo file
+  yum_repository:
+    name: kibana
+    description: Kibana YUM repo
+    file: elastic
+    baseurl: "{{ kibana_yum_repo_url }}"
+    gpgkey: "{{ kibana_yum_repo_key }}"
+    params: "{{ kibana_yum_repo_params }}"
+  tags:
+    - kibana_pkg
+
+- name: Install Kibana package
+  package:
+    name: "{{ kibana_pkg }}"
+  notify:
+    - Restart Kibana service
+  tags:
+    - kibana_pkg
+
+- name: Configure Kibana
+  template:
+    src: kibana.yml.j2
+    dest: "{{ kibana_config_file }}"
+  notify:
+    - Restart Kibana service
+  tags:
+    - kibana_config
+
+- name: Enable Kibana service
+  service:
+    name: "{{ kibana_service }}"
+    enabled: yes
+  tags:
+    - kibana_service
+
+- name: Start Kibana service
+  service:
+    name: "{{ kibana_service }}"
+    state: started
+  register: kibana_service_started
+  tags:
+    - kibana_service

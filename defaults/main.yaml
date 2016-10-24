@@ -1,0 +1,32 @@
+---
+
+# Package to be installed (explicit version can be specified here)
+kibana_pkg: kibana
+
+# YUM repo URL
+kibana_yum_repo_url: https://packages.elastic.co/kibana/4.6/centos
+
+# YUM repo GPG key
+kibana_yum_repo_key: https://packages.elastic.co/GPG-KEY-elasticsearch
+
+# Extra EPEL YUM repo params
+kibana_yum_repo_params: {}
+
+# Name of the service
+kibana_service: kibana
+
+
+# Path to the Kibana config file
+kibana_config_file: /opt/kibana/config/kibana.yml
+
+# Default configuration
+kibana_config__default: {}
+
+# Custom configuration
+kibana_config__custom: {}
+
+# Final configuration
+kibana_config: "{{
+  kibana_config__default.update(
+  kibana_config__custom) }}{{
+  kibana_config__default }}"

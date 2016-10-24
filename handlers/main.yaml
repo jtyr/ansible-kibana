@@ -1,0 +1,9 @@
+---
+
+- name: Restart Kibana service
+  service:
+    name: "{{ kibana_service }}"
+    state: restarted
+  when: >
+    kibana_service_started is not defined or
+    not kibana_service_started.changed
