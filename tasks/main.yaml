@@ -6,9 +6,8 @@
 
 - name: Create Kibana YUM repo file
   yum_repository:
-    name: kibana
-    description: Kibana YUM repo
-    file: elastic
+    name: elastic
+    description: Elastic YUM repo
     baseurl: "{{ kibana_yum_repo_url }}"
     gpgkey: "{{ kibana_yum_repo_key }}"
     params: "{{ kibana_yum_repo_params }}"

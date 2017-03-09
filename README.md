@@ -26,10 +26,14 @@ Examples
 - name: Example of how to customize the configuration
   hosts: all
   vars:
-    kibana_config:
-      # Change the Elasticsearch URL
-      elasticsearch:
-        url: http://10.0.0.15:9200
+    # Bind to all network interfaces
+    kibana_config_server_host: 0.0.0.0
+    # Change the Elasticsearch URL
+    kibana_config_elasticsearch_url: http://myserver:9200
+    # Extend the default server configuration
+    kibana_config_server__custom:
+      # Change the default port
+      port: 8080
   roles:
     - kibana
 ```
@@ -43,12 +47,12 @@ Role variables
 kibana_pkg: kibana
 
 # YUM repo URL
-kibana_yum_repo_url: https://packages.elastic.co/kibana/4.6/centos
+kibana_yum_repo_url: https://artifacts.elastic.co/packages/5.x/yum
 
 # YUM repo GPG key
-kibana_yum_repo_key: https://packages.elastic.co/GPG-KEY-elasticsearch
+kibana_yum_repo_key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-# Extra EPEL YUM repo params
+# Extra YUM repo params
 kibana_yum_repo_params: {}
 
 # Name of the service
@@ -56,10 +60,44 @@ kibana_service: kibana
 
 
 # Path to the Kibana config file
-kibana_config_file: /opt/kibana/config/kibana.yml
+kibana_config_file: /etc/kibana/kibana.yml
+
+# Values of default configurations
+kibana_config_elasticsearch_url: http://localhost:9200
+
+# Default options of the elasticsearch section
+kibana_config_elasticsearch__default:
+  url: "{{ kibana_config_elasticsearch_url }}"
+
+# Default options of the elasticsearch section
+kibana_config_elasticsearch__custom: {}
+
+# Final options of the elasticsearch section
+kibana_config_elasticsearch: "{{
+  kibana_config_elasticsearch__default.update(kibana_config_elasticsearch__custom) }}{{
+  kibana_config_elasticsearch__default }}"
+
+
+# Values of the default options of the server section
+kibana_config_server_host: 127.0.0.1
+
+# Defaukt options of the server section
+kibana_config_server__default:
+  host: "{{ kibana_config_server_host }}"
+
+# Custom options of the server section
+kibana_config_server__custom: {}
+
+# Final options of the server section
+kibana_config_server: "{{
+  kibana_config_server__default.update(kibana_config_server__custom) }}{{
+  kibana_config_server__default}}"
+
 
 # Default configuration
-kibana_config__default: {}
+kibana_config__default:
+  elasticsearch: "{{ kibana_config_elasticsearch }}"
+  server: "{{ kibana_config_server }}"
 
 # Custom configuration
 kibana_config__custom: {}
