@@ -10,7 +10,7 @@ kibana_yum_repo_url: "{{ elastic_yum_repo_url | default('https://artifacts.elast
 kibana_yum_repo_key: "{{ elastic_yum_repo_key | default('https://artifacts.elastic.co/GPG-KEY-elasticsearch') }}"
 
 # Extra YUM repo params
-kibana_yum_repo_params: {}
+kibana_yum_repo_params: "{{ elastic_yum_repo_params | default({}) }}"
 
 # Name of the service
 kibana_service: kibana
