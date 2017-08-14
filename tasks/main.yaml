@@ -2,7 +2,9 @@
 
 - name: Test distribution
   assert:
-    that: ansible_os_family == "RedHat"
+    that: >
+      ansible_os_family == "RedHat" or
+      ansible_os_family == 'Debian'
 
 - name: Create Kibana YUM repo file
   yum_repository:
@@ -11,8 +13,28 @@
     baseurl: "{{ kibana_yum_repo_url }}"
     gpgkey: "{{ kibana_yum_repo_key }}"
     params: "{{ kibana_yum_repo_params }}"
+  when: >
+    ansible_os_family == 'RedHat'
   tags:
     - kibana_pkg
+
+- name: Install Kibana GPG key
+  apt_key:
+    url: "{{ kibana_apt_repo_key }}"
+  when: >
+    ansible_os_family == 'Debian'
+  tags:
+    - kibana_pkg
+    - kibana_aptrepo
+
+- name: Create Kibana APT repo file
+  apt_repository:
+    repo: "{{ kibana_apt_repo_string }}"
+  when: >
+    ansible_os_family == 'Debian'
+  tags:
+    - kibana_pkg
+    - kibana_aptrepo
 
 - name: Install Kibana package
   package:

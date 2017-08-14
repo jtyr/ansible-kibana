@@ -12,6 +12,12 @@ kibana_yum_repo_key: "{{ elastic_yum_repo_key | default('https://artifacts.elast
 # Extra YUM repo params
 kibana_yum_repo_params: "{{ elastic_yum_repo_params | default({}) }}"
 
+# GPG key for the APT repo
+kibana_apt_repo_key: "{{ elastic_apt_repo_key | default('https://artifacts.elastic.co/GPG-KEY-elasticsearch') }}"
+
+# APT repo string
+kibana_apt_repo_string: "{{ elastic_apt_repo_string | default('deb https://artifacts.elastic.co/packages/5.x/apt stable main') }}"
+
 # Name of the service
 kibana_service: kibana
 
