@@ -22,6 +22,16 @@ kibana_apt_repo_string: "{{ elastic_apt_repo_string | default('deb https://artif
 kibana_service: kibana
 
 
+# Path to the kibana-plugin executable
+kibana_plugins_bin: /usr/share/kibana/bin/kibana-plugin
+
+# Plugin installation flags
+kibana_plugins_flags: install
+
+# List of plugins to install
+kibana_plugins: []
+
+
 # Path to the Kibana config file
 kibana_config_file: /etc/kibana/kibana.yml
 

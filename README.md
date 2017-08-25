@@ -34,6 +34,9 @@ Examples
     kibana_config_server__custom:
       # Change the default port
       port: 8080
+    # Install plugins
+    kibana_plugins:
+      - x-pack
   roles:
     - kibana
 ```
@@ -63,6 +66,16 @@ kibana_apt_repo_string: "{{ elastic_apt_repo_string | default('deb https://artif
 
 # Name of the service
 kibana_service: kibana
+
+
+# Path to the kibana-plugin executable
+kibana_plugins_bin: /usr/share/kibana/bin/kibana-plugin
+
+# Plugin installation flags
+kibana_plugins_flags: install
+
+# List of plugins to install
+kibana_plugins: []
 
 
 # Path to the Kibana config file

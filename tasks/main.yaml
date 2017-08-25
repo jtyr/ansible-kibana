@@ -44,6 +44,32 @@
   tags:
     - kibana_pkg
 
+- name: Check installed plugins
+  shell: >
+    {{ kibana_plugins_bin }} list 2>/dev/null
+  when: >
+    kibana_plugins | length > 0
+  register: kibana_plugins_installed_results
+  changed_when: false
+  tags:
+    - kibana_plugins
+    - kibana_plugins_check
+
+- name: Install plugins
+  shell: >
+    {{ kibana_plugins_bin }} {{ kibana_plugins_flags }} {{ item }}
+  when: >
+    kibana_plugins | length > 0 and (
+      kibana_plugins_installed_results is not defined or
+      item not in kibana_plugins_installed_results.stdout_lines
+    )
+  with_items: "{{ kibana_plugins }}"
+  notify:
+    - Restart Kibana service
+  tags:
+    - kibana_plugins
+    - kibana_plugins_install
+
 - name: Configure Kibana
   template:
     src: kibana.yml.j2
