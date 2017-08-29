@@ -57,8 +57,9 @@
 
 - name: Install plugins
   shell: >
-    {{ kibana_plugins_bin }} {{ kibana_plugins_flags }} {{ item }}
+    {{ kibana_plugins_bin }} install {{ item }}
   when: >
+    item[0] != '!' and
     kibana_plugins | length > 0 and (
       kibana_plugins_installed_results is not defined or
       item not in kibana_plugins_installed_results.stdout_lines
@@ -69,6 +70,22 @@
   tags:
     - kibana_plugins
     - kibana_plugins_install
+
+- name: Remove plugins
+  shell: >
+    {{ kibana_plugins_bin }} remove {{ item[1:] }}
+  when: >
+    item[0] == '!' and
+    kibana_plugins | length > 0 and (
+      kibana_plugins_installed_results is not defined or
+      item[1:] in kibana_plugins_installed_results.stdout_lines
+    )
+  with_items: "{{ kibana_plugins }}"
+  notify:
+    - Restart Kibana service
+  tags:
+    - kibana_plugins
+    - kibana_plugins_remove
 
 - name: Configure Kibana
   template:
