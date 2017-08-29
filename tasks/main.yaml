@@ -46,11 +46,12 @@
 
 - name: Check installed plugins
   shell: >
-    {{ kibana_plugins_bin }} list | sed 's/@.*//' 2>/dev/null
+    {{ kibana_plugins_bin }} list | sed 's/@.*//' | grep -v '^$' 2>/dev/null
   when: >
     kibana_plugins | length > 0
   register: kibana_plugins_installed_results
   changed_when: false
+  failed_when: false
   tags:
     - kibana_plugins
     - kibana_plugins_check
