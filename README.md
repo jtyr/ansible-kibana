@@ -50,7 +50,7 @@ Role variables
 kibana_pkg: kibana
 
 # YUM repo URL
-kibana_yum_repo_url: "{{ elastic_yum_repo_url | default('https://artifacts.elastic.co/packages/5.x/yum') }}"
+kibana_yum_repo_url: "{{ elastic_yum_repo_url | default('https://artifacts.elastic.co/packages/6.x/yum') }}"
 
 # YUM repo GPG key
 kibana_yum_repo_key: "{{ elastic_yum_repo_key | default('https://artifacts.elastic.co/GPG-KEY-elasticsearch') }}"
@@ -62,7 +62,7 @@ kibana_yum_repo_params: "{{ elastic_yum_repo_params | default({}) }}"
 kibana_apt_repo_key: "{{ elastic_apt_repo_key | default('https://artifacts.elastic.co/GPG-KEY-elasticsearch') }}"
 
 # APT repo string
-kibana_apt_repo_string: "{{ elastic_apt_repo_string | default('deb https://artifacts.elastic.co/packages/5.x/apt stable main') }}"
+kibana_apt_repo_string: "{{ elastic_apt_repo_string | default('deb https://artifacts.elastic.co/packages/6.x/apt stable main') }}"
 
 # Name of the service
 kibana_service: kibana
