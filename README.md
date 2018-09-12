@@ -97,7 +97,7 @@ kibana_config_elasticsearch: "{{
 # Values of the default options of the server section
 kibana_config_server_host: 127.0.0.1
 
-# Defaukt options of the server section
+# Default options of the server section
 kibana_config_server__default:
   host: "{{ kibana_config_server_host }}"
 
