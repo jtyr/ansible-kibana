@@ -50,10 +50,12 @@ kibana_config_elasticsearch: "{{
 
 # Values of the default options of the server section
 kibana_config_server_host: 127.0.0.1
+kibana_config_server_port: 5601
 
 # Default options of the server section
 kibana_config_server__default:
   host: "{{ kibana_config_server_host }}"
+  port: "{{ kibana_config_server_port }}"
 
 # Custom options of the server section
 kibana_config_server__custom: {}

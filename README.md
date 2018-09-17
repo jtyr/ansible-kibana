@@ -15,7 +15,7 @@ Please report any issues or send PR.
 Examples
 --------
 
-```
+```yaml
 ---
 
 - name: Example of how to install Kibana with the default configuration
@@ -28,12 +28,15 @@ Examples
   vars:
     # Bind to all network interfaces
     kibana_config_server_host: 0.0.0.0
+    # Change the default port
+    kibana_config_server_port: 8080
     # Change the Elasticsearch URL
     kibana_config_elasticsearch_url: http://myserver:9200
-    # Extend the default server configuration
-    kibana_config_server__custom:
-      # Change the default port
-      port: 8080
+    # Add custom configuration
+    kibana_config__custom:
+      # Enable verbose logging
+      logging:
+        verbose: yes
     # Install plugins
     kibana_plugins:
       - x-pack
@@ -45,7 +48,7 @@ Examples
 Role variables
 --------------
 
-```
+```yaml
 # Package to be installed (explicit version can be specified here)
 kibana_pkg: kibana
 
@@ -96,10 +99,12 @@ kibana_config_elasticsearch: "{{
 
 # Values of the default options of the server section
 kibana_config_server_host: 127.0.0.1
+kibana_config_server_port: 5601
 
 # Default options of the server section
 kibana_config_server__default:
   host: "{{ kibana_config_server_host }}"
+  port: "{{ kibana_config_server_port }}"
 
 # Custom options of the server section
 kibana_config_server__custom: {}
