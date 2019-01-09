@@ -3,8 +3,8 @@
 - name: Test distribution
   assert:
     that: >
-      ansible_os_family == "RedHat" or
-      ansible_os_family == 'Debian'
+      ansible_facts.os_family == "RedHat" or
+      ansible_facts.os_family == 'Debian'
 
 - name: Create Kibana YUM repo file
   yum_repository:
@@ -12,9 +12,9 @@
     description: Elastic YUM repo
     baseurl: "{{ kibana_yum_repo_url }}"
     gpgkey: "{{ kibana_yum_repo_key }}"
-    params: "{{ kibana_yum_repo_params }}"
+  args: "{{ kibana_yum_repo_params }}"
   when: >
-    ansible_os_family == 'RedHat'
+    ansible_facts.os_family == 'RedHat'
   tags:
     - kibana_pkg
 
@@ -22,7 +22,7 @@
   apt_key:
     url: "{{ kibana_apt_repo_key }}"
   when: >
-    ansible_os_family == 'Debian'
+    ansible_facts.os_family == 'Debian'
   tags:
     - kibana_pkg
     - kibana_aptrepo
@@ -30,8 +30,9 @@
 - name: Create Kibana APT repo file
   apt_repository:
     repo: "{{ kibana_apt_repo_string }}"
+  args: "{{ kibana_apt_repo_params }}"
   when: >
-    ansible_os_family == 'Debian'
+    ansible_facts.os_family == 'Debian'
   tags:
     - kibana_pkg
     - kibana_aptrepo

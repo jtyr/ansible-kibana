@@ -3,11 +3,11 @@ kibana
 
 Ansible role which helps to install and configure Kibana.
 
-The configuration of the role is done in such way that it should not be
-necessary to change the role for any kind of configuration. All can be
-done either by changing role parameters or by declaring completely new
-configuration as a variable. That makes this role absolutely
-universal. See the examples below for more details.
+The configuration of the role is done in such way that it should not be necessary
+to change the role for any kind of configuration. All can be done either by
+changing role parameters or by declaring completely new configuration as a
+variable. That makes this role absolutely universal. See the examples below for
+more details.
 
 Please report any issues or send PR.
 
@@ -67,6 +67,9 @@ kibana_apt_repo_key: "{{ elastic_apt_repo_key | default('https://artifacts.elast
 # APT repo string
 kibana_apt_repo_string: "{{ elastic_apt_repo_string | default('deb https://artifacts.elastic.co/packages/6.x/apt stable main') }}"
 
+# Extra APT repo params
+kibana_apt_repo_params: "{{ elastic_apt_repo_params | default({}) }}"
+
 # Name of the service
 kibana_service: kibana
 
@@ -93,8 +96,8 @@ kibana_config_elasticsearch__custom: {}
 
 # Final options of the elasticsearch section
 kibana_config_elasticsearch: "{{
-  kibana_config_elasticsearch__default.update(kibana_config_elasticsearch__custom) }}{{
-  kibana_config_elasticsearch__default }}"
+  kibana_config_elasticsearch__default | combine(
+  kibana_config_elasticsearch__custom) }}"
 
 
 # Values of the default options of the server section
@@ -111,8 +114,8 @@ kibana_config_server__custom: {}
 
 # Final options of the server section
 kibana_config_server: "{{
-  kibana_config_server__default.update(kibana_config_server__custom) }}{{
-  kibana_config_server__default}}"
+  kibana_config_server__default | combine(
+  kibana_config_server__custom) }}"
 
 
 # Default configuration
@@ -125,9 +128,8 @@ kibana_config__custom: {}
 
 # Final configuration
 kibana_config: "{{
-  kibana_config__default.update(
-  kibana_config__custom) }}{{
-  kibana_config__default }}"
+  kibana_config__default | combine(
+  kibana_config__custom) }}"
 ```
 
 
